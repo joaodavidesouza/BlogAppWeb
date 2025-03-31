@@ -28,42 +28,51 @@ public class BlogAppController {
 	@Autowired
 	BlogAppService blogappservice;
 
-	// Add root path redirection
+	// Root path redirection
 	@GetMapping("/")
 	public String rootRedirect() {
 		return "redirect:/posts";
 	}
 
-	// LISTA TODOS OS POSTS
+	// Login page
+	@GetMapping("/login")
+	public String login() {
+		return "login";
+	}
+
+	// List all posts
 	@GetMapping(value = "/posts")
 	public ModelAndView getPosts() {
 		ModelAndView mv = new ModelAndView("posts");
 		List<PostModel> posts = blogappservice.findAll();
-		mv.addObject("post", posts);
+		mv.addObject("posts", posts); // Fixed variable name to match Thymeleaf template
 		return mv;
 	}
 
-	// MOSTRA DETALHES DE UM POST ESPECÍFICO
+	// Show post details
 	@GetMapping(value = "/posts/{id}")
-	public ModelAndView getPostDetails(@PathVariable UUID id) {
-		ModelAndView mv = new ModelAndView("postDetails");
+	public ModelAndView getPostDetails(@PathVariable UUID id, RedirectAttributes redirectAttributes) {
 		Optional<PostModel> post = blogappservice.findById(id);
 
 		if (post.isPresent()) {
+			ModelAndView mv = new ModelAndView("postDetails");
 			mv.addObject("post", post.get());
+			return mv;
+		} else {
+			// Handle case when post doesn't exist
+			redirectAttributes.addFlashAttribute("error", "Post not found!");
+			return new ModelAndView("redirect:/posts");
 		}
-
-		return mv;
 	}
 
-	// PREPARAR FORMULÁRIO PARA NOVO POST
+	// Prepare form for new post
 	@GetMapping(value = "/newpost")
 	public String getPostForm(Model model) {
 		model.addAttribute("postDto", new BlogAppRecordDto(null, null, null));
 		return "newpostForm";
 	}
 
-	// SALVAR NOVO POST
+	// Save new post
 	@PostMapping(value = "/newpost")
 	public String savePost(@Valid @ModelAttribute("postDto") BlogAppRecordDto postDto,
 						   BindingResult bindingResult,
@@ -84,7 +93,7 @@ public class BlogAppController {
 		return "redirect:/posts";
 	}
 
-	// DELETE POST
+	// Delete post
 	@GetMapping("/posts/delete/{id}")
 	public String deletePost(@PathVariable UUID id, RedirectAttributes redirectAttributes) {
 		Optional<PostModel> post = blogappservice.findById(id);
@@ -92,6 +101,8 @@ public class BlogAppController {
 		if (post.isPresent()) {
 			blogappservice.delete(post.get());
 			redirectAttributes.addFlashAttribute("message", "Post deleted successfully!");
+		} else {
+			redirectAttributes.addFlashAttribute("error", "Post not found!");
 		}
 
 		return "redirect:/posts";

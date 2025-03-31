@@ -1,10 +1,7 @@
 package com.web.BlogApp.model;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.UUID;
-
-import jakarta.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -20,31 +17,26 @@ import jakarta.validation.constraints.NotBlank;
 @Entity
 @Table(name="TB_POST")
 public class PostModel {
-	
+
 	@Id
 	@GeneratedValue(strategy= GenerationType.AUTO)
 	private UUID id;
-	
+
 	@NotBlank
 	private String autor;
-	
+
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
 	private LocalDate data;
-	
+
 	@NotBlank
 	private String titulo;
-	
+
 	@NotBlank
 	@Lob
 	@Column(columnDefinition="text")
-	//@Column(name = "texto", columnDefinition="text")
 	private String texto;
-	
-	@OneToMany
-//	private List<PostComentarioModel> postComentarioModel;
-	
-	
-	
+
+	// Removed orphaned @OneToMany annotation and related commented code
 
 	public UUID getId() {
 		return id;
@@ -85,16 +77,4 @@ public class PostModel {
 	public void setTexto(String texto) {
 		this.texto = texto;
 	}
-//
-//	public List<PostComentarioModel> getPostComentarioModel() {
-//		return postComentarioModel;
-//	}
-//
-//	public void setPostComentarioModel(List<PostComentarioModel> postComentarioModel) {
-//		this.postComentarioModel = postComentarioModel;
-//	}
-	
-	
-	
-
 }
