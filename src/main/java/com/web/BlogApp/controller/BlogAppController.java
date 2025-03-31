@@ -107,4 +107,53 @@ public class BlogAppController {
 
 		return "redirect:/posts";
 	}
+
+	// Show edit form
+	@GetMapping("/posts/edit/{id}")
+	public String getEditPostForm(@PathVariable UUID id, Model model, RedirectAttributes redirectAttributes) {
+		Optional<PostModel> post = blogappservice.findById(id);
+
+		if (post.isPresent()) {
+			BlogAppRecordDto postDto = new BlogAppRecordDto(
+					post.get().getAutor(),
+					post.get().getTitulo(),
+					post.get().getTexto()
+			);
+			model.addAttribute("postDto", postDto);
+			model.addAttribute("postId", id);
+			return "editpostForm";
+		} else {
+			redirectAttributes.addFlashAttribute("error", "Post not found!");
+			return "redirect:/posts";
+		}
+	}
+
+	// Update post
+	@PostMapping("/posts/edit/{id}")
+	public String updatePost(@PathVariable UUID id,
+							 @Valid @ModelAttribute("postDto") BlogAppRecordDto postDto,
+							 BindingResult bindingResult,
+							 RedirectAttributes redirectAttributes) {
+
+		if (bindingResult.hasErrors()) {
+			return "editpostForm";
+		}
+
+		Optional<PostModel> existingPost = blogappservice.findById(id);
+
+		if (existingPost.isPresent()) {
+			PostModel post = existingPost.get();
+			post.setAutor(postDto.autor());
+			post.setTitulo(postDto.titulo());
+			post.setTexto(postDto.texto());
+			// Keep the original date
+
+			blogappservice.save(post);
+			redirectAttributes.addFlashAttribute("message", "Post updated successfully!");
+		} else {
+			redirectAttributes.addFlashAttribute("error", "Post not found!");
+		}
+
+		return "redirect:/posts";
+	}
 }
