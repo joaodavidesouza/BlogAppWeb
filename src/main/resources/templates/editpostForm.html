@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title th:text="${post.titulo} + ' | Web Blog'">Post Details</title>
+    <title>Edit Post | Web Blog</title>
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Google Fonts -->
@@ -16,7 +16,6 @@
             margin: 0;
             padding: 0;
             min-height: 100vh;
-            line-height: 1.7;
         }
 
         /* Vista orb glow effect */
@@ -94,34 +93,20 @@
             background: linear-gradient(to bottom, #9cff9c, #40e740);
         }
 
-        .post-container {
-            max-width: 800px;
+        .form-container {
+            max-width: 600px;
             margin: 3rem auto 5rem auto;
-            padding: 0 1rem;
+            padding: 2rem;
             position: relative;
             z-index: 1;
         }
 
-        .post-header {
-            padding: 2rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .post-title {
+        .form-title {
             color: #0c3b69;
             font-weight: 600;
-            margin-bottom: 1rem;
-            text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
-        }
-
-        .post-meta {
-            color: #555;
             margin-bottom: 1.5rem;
+            text-align: center;
             text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
-        }
-
-        .post-content {
-            padding: 2rem;
         }
 
         .navbar {
@@ -165,34 +150,56 @@
             box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.3);
         }
 
-        /* Windows 7 Red Button Style */
-        .btn-win7-red {
-            background: linear-gradient(to bottom, #ff7373, #e04040 49%, #d90c0c 50%, #c00a0a);
-            border: 1px solid #c00a0a;
-            color: white;
+        /* Windows 7 Gray Button Style */
+        .btn-win7-gray {
+            background: linear-gradient(to bottom, #f8f8f8, #e8e8e8 49%, #d8d8d8 50%, #d0d0d0);
+            border: 1px solid #bbbbbb;
+            color: #333;
             font-weight: 400;
-            text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.4);
+            text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
             box-shadow:
-                    inset 0 1px 0 rgba(255, 255, 255, 0.4),
-                    0 1px 3px rgba(0, 0, 0, 0.2);
+                    inset 0 1px 0 rgba(255, 255, 255, 0.8),
+                    0 1px 3px rgba(0, 0, 0, 0.1);
             transition: all 0.2s ease;
             border-radius: 3px;
             padding: 8px 16px;
         }
 
-        .btn-win7-red:hover {
-            background: linear-gradient(to bottom, #ff9292, #e55050 49%, #e22525 50%, #d01515);
-            color: white;
+        .btn-win7-gray:hover {
+            background: linear-gradient(to bottom, #f0f0f0, #e0e0e0 49%, #d0d0d0 50%, #c8c8c8);
+            color: #333;
         }
 
-        .btn-win7-red:active {
-            background: #d90c0c;
-            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.3);
+        .btn-win7-gray:active {
+            background: #d8d8d8;
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.15);
         }
 
-        .post-actions {
-            display: flex;
-            gap: 10px;
+        /* Form controls */
+        .form-control {
+            border-radius: 3px;
+            border: 1px solid #bbb;
+            box-shadow:
+                    inset 0 1px 3px rgba(0, 0, 0, 0.15),
+                    inset 0 0 0 1px rgba(0, 0, 0, 0.05);
+            padding: 8px 10px;
+            background-color: #FFFCDF; /* Vista/7 yellow input color */
+            transition: all 0.2s ease;
+        }
+
+        .form-control:focus {
+            border-color: #73b9ff;
+            box-shadow:
+                    0 0 6px rgba(115, 185, 255, 0.5),
+                    inset 0 1px 3px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+        }
+
+        .form-label {
+            font-weight: 500;
+            color: #104e8b;
+            text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+            margin-bottom: 0.3rem;
         }
 
         /* Vista taskbar */
@@ -244,10 +251,10 @@
     </div>
 </nav>
 
-<main class="post-container">
-    <section class="post-header aero-glass">
+<div class="container">
+    <div class="form-container aero-glass">
         <div class="aero-title-bar">
-            <div class="aero-title-text" th:text="${post.titulo}">Post Title</div>
+            <div class="aero-title-text">Edit Post</div>
             <div class="window-controls">
                 <div class="window-button window-minimize"></div>
                 <div class="window-button window-maximize"></div>
@@ -255,29 +262,33 @@
             </div>
         </div>
 
-        <div class="post-meta">
-            <span><i class="bi bi-person me-2"></i><span th:text="${post.autor}">Author</span></span>
-            <span class="mx-2">•</span>
-            <span><i class="bi bi-calendar me-2"></i><span th:text="${#temporals.format(post.data, 'dd MMM yyyy')}">Date</span></span>
-        </div>
-
-        <p th:text="${post.texto}">Post Content</p>
-
-        <div class="mt-4 post-actions">
-            <a href="/posts" class="btn btn-win7">
-                <i class="bi bi-arrow-left me-2"></i>Back to Posts
-            </a>
-            <a th:href="@{/posts/edit/{id}(id=${post.id})}" class="btn btn-win7">
-                <i class="bi bi-pencil me-2"></i>Edit
-            </a>
-            <a th:href="@{/posts/delete/{id}(id=${post.id})}"
-               class="btn btn-win7-red"
-               onclick="return confirm('Are you sure you want to delete this post?')">
-                <i class="bi bi-trash me-2"></i>Delete
-            </a>
-        </div>
-    </section>
-</main>
+        <form th:action="@{/posts/edit/{id}(id=${postId})}" method="post" th:object="${postDto}">
+            <div class="mb-3">
+                <label for="autor" class="form-label">Author</label>
+                <input type="text" class="form-control" id="autor" th:field="*{autor}" required>
+                <div class="text-danger" th:if="${#fields.hasErrors('autor')}" th:errors="*{autor}"></div>
+            </div>
+            <div class="mb-3">
+                <label for="titulo" class="form-label">Title</label>
+                <input type="text" class="form-control" id="titulo" th:field="*{titulo}" required>
+                <div class="text-danger" th:if="${#fields.hasErrors('titulo')}" th:errors="*{titulo}"></div>
+            </div>
+            <div class="mb-3">
+                <label for="texto" class="form-label">Content</label>
+                <textarea class="form-control" id="texto" th:field="*{texto}" rows="10" required></textarea>
+                <div class="text-danger" th:if="${#fields.hasErrors('texto')}" th:errors="*{texto}"></div>
+            </div>
+            <div class="d-flex justify-content-between">
+                <button type="submit" class="btn btn-win7">
+                    <i class="bi bi-check-lg me-2"></i>Update Post
+                </button>
+                <a href="/posts" class="btn btn-win7-gray">
+                    <i class="bi bi-x-lg me-2"></i>Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
 
 <!-- Vista taskbar -->
 <div class="vista-taskbar">

@@ -304,9 +304,12 @@
                 Post excerpt
             </span>
         </p>
-        <div class="post-actions">
-            <a th:href="@{/posts/{id}(id=${post.id})}" class="btn btn-win7">
-                <i class="bi bi-book me-2"></i>Read More
+        <div class="mt-4 post-actions">
+            <a href="/posts" class="btn btn-win7">
+                <i class="bi bi-arrow-left me-2"></i>Back to Posts
+            </a>
+            <a th:href="@{/posts/edit/{id}(id=${post.id})}" class="btn btn-win7">
+                <i class="bi bi-pencil me-2"></i>Edit
             </a>
             <a th:href="@{/posts/delete/{id}(id=${post.id})}"
                class="btn btn-win7-red"
