@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -113,13 +113,6 @@
 
         .blog-card:hover {
             transform: translateY(-5px);
-        }
-
-        .blog-title {
-            color: #0c3b69;
-            font-weight: 600;
-            margin-bottom: 1rem;
-            text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
         }
 
         .blog-meta {
@@ -280,6 +273,7 @@
 </nav>
 
 <main class="blog-container">
+    <!--/*@thymesVar id="message" type=""*/-->
     <div th:if="${message}" class="alert alert-success aero-glass" role="alert">
         <span th:text="${message}"></span>
     </div>
@@ -305,8 +299,8 @@
             </span>
         </p>
         <div class="mt-4 post-actions">
-            <a href="/posts" class="btn btn-win7">
-                <i class="bi bi-arrow-left me-2"></i>Back to Posts
+            <a th:href="@{/posts/{id}(id=${post.id})}" class="btn btn-win7">
+                <i class="bi bi-bookmark me-2"></i>Details
             </a>
             <a th:href="@{/posts/edit/{id}(id=${post.id})}" class="btn btn-win7">
                 <i class="bi bi-pencil me-2"></i>Edit

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +8,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@300;400;600&display=swap" rel="stylesheet">
+    <!-- Summernote CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.20/dist/summernote-lite.min.css" rel="stylesheet">
     <style>
         body {
             font-family: 'Segoe UI', 'Tahoma', sans-serif;
@@ -94,19 +96,11 @@
         }
 
         .form-container {
-            max-width: 600px;
+            max-width: 800px;
             margin: 3rem auto 5rem auto;
             padding: 2rem;
             position: relative;
             z-index: 1;
-        }
-
-        .form-title {
-            color: #0c3b69;
-            font-weight: 600;
-            margin-bottom: 1.5rem;
-            text-align: center;
-            text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
         }
 
         .navbar {
@@ -239,6 +233,9 @@
             font-size: 0.9rem;
             text-shadow: 0 1px 2px rgba(0,0,0,0.5);
         }
+
+        /* Summernote customizations to match Windows 7 theme */
+
     </style>
 </head>
 <body>
@@ -272,8 +269,8 @@
                 <input type="text" class="form-control" id="titulo" th:field="*{titulo}" required>
             </div>
             <div class="mb-3">
-                <label for="texto" class="form-label">Content</label>
-                <textarea class="form-control" id="texto" th:field="*{texto}" rows="10" required></textarea>
+                <label for="summernote" class="form-label">Content</label>
+                <textarea id="summernote" th:field="*{texto}" required></textarea>
             </div>
             <div class="d-flex justify-content-between">
                 <button type="submit" class="btn btn-win7">
@@ -304,9 +301,48 @@
     <div class="taskbar-time" id="taskbar-time">7:31 PM</div>
 </div>
 
-
-<!-- Bootstrap 5 JS and Bootstrap Icons -->
+<!-- jQuery first, then Bootstrap JS and Bootstrap Icons -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Summernote JS -->
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.20/dist/summernote-lite.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        // Initialize Summernote
+        $('#summernote').summernote({
+            placeholder: 'Write your blog post here...',
+            tabsize: 2,
+            height: 300,
+            toolbar: [
+                ['style', ['style']],
+                ['font', ['bold', 'underline', 'clear']],
+                ['color', ['color']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['table', ['table']],
+                ['insert', ['link', ]],
+                ['view', ['fullscreen', 'codeview', 'help']]
+            ],
+        });
+
+        // Update taskbar time every minute
+        function updateTaskbarTime() {
+            const now = new Date();
+            let hours = now.getHours();
+            const minutes = now.getMinutes();
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+
+            hours = hours % 12;
+            hours = hours ? hours : 12;
+
+            document.getElementById('taskbar-time').textContent = hours + ':' + (minutes < 10 ? '0' + minutes : minutes) + ' ' + ampm;
+        }
+
+        updateTaskbarTime();
+        setInterval(updateTaskbarTime, 60000);
+    });
+</script>
 </body>
 </html>
