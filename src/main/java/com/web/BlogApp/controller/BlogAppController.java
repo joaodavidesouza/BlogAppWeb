@@ -1,6 +1,7 @@
 package com.web.BlogApp.controller;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -17,6 +18,8 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.web.BlogApp.dtos.BlogAppRecordDto;
+import com.web.BlogApp.dtos.CommentDto;
+import com.web.BlogApp.model.PostCommentModel;
 import com.web.BlogApp.model.PostModel;
 import com.web.BlogApp.service.BlogAppService;
 
@@ -45,7 +48,7 @@ public class BlogAppController {
 	public ModelAndView getPosts() {
 		ModelAndView mv = new ModelAndView("posts");
 		List<PostModel> posts = blogappservice.findAll();
-		mv.addObject("posts", posts); // Fixed variable name to match Thymeleaf template
+		mv.addObject("posts", posts);
 		return mv;
 	}
 
@@ -57,6 +60,7 @@ public class BlogAppController {
 		if (post.isPresent()) {
 			ModelAndView mv = new ModelAndView("postDetails");
 			mv.addObject("post", post.get());
+			mv.addObject("commentDto", new CommentDto(null, null));
 			return mv;
 		} else {
 			// Handle case when post doesn't exist
@@ -155,5 +159,105 @@ public class BlogAppController {
 		}
 
 		return "redirect:/posts";
+	}
+
+	// Add a comment to a post
+	@PostMapping("/posts/{postId}/comments")
+	public String addComment(@PathVariable UUID postId,
+							 @Valid @ModelAttribute("commentDto") CommentDto commentDto,
+							 BindingResult bindingResult,
+							 RedirectAttributes redirectAttributes) {
+
+		if (bindingResult.hasErrors()) {
+			return "redirect:/posts/" + postId;
+		}
+
+		Optional<PostModel> post = blogappservice.findById(postId);
+
+		if (post.isPresent()) {
+			PostCommentModel comment = new PostCommentModel();
+			comment.setAuthor(commentDto.author());
+			comment.setContent(commentDto.content());
+			comment.setDateTime(LocalDateTime.now());
+			comment.setPost(post.get());
+
+			blogappservice.saveComment(comment);
+			redirectAttributes.addFlashAttribute("message", "Comment added successfully!");
+		} else {
+			redirectAttributes.addFlashAttribute("error", "Post not found!");
+		}
+
+		return "redirect:/posts/" + postId;
+	}
+
+	// Show edit comment form
+	@GetMapping("/posts/{postId}/comments/{commentId}/edit")
+	public String getEditCommentForm(@PathVariable UUID postId,
+									 @PathVariable UUID commentId,
+									 Model model,
+									 RedirectAttributes redirectAttributes) {
+
+		Optional<PostCommentModel> comment = blogappservice.findCommentById(commentId);
+
+		if (comment.isPresent() && comment.get().getPost().getId().equals(postId)) {
+			CommentDto commentDto = new CommentDto(
+					comment.get().getAuthor(),
+					comment.get().getContent()
+			);
+			model.addAttribute("commentDto", commentDto);
+			model.addAttribute("postId", postId);
+			model.addAttribute("commentId", commentId);
+			return "editCommentForm";
+		} else {
+			redirectAttributes.addFlashAttribute("error", "Comment not found!");
+			return "redirect:/posts/" + postId;
+		}
+	}
+
+	// Update comment
+	@PostMapping("/posts/{postId}/comments/{commentId}")
+	public String updateComment(@PathVariable UUID postId,
+								@PathVariable UUID commentId,
+								@Valid @ModelAttribute("commentDto") CommentDto commentDto,
+								BindingResult bindingResult,
+								RedirectAttributes redirectAttributes) {
+
+		if (bindingResult.hasErrors()) {
+			return "editCommentForm";
+		}
+
+		Optional<PostCommentModel> existingComment = blogappservice.findCommentById(commentId);
+
+		if (existingComment.isPresent() && existingComment.get().getPost().getId().equals(postId)) {
+			PostCommentModel comment = existingComment.get();
+			comment.setAuthor(commentDto.author());
+			comment.setContent(commentDto.content());
+			// Keep the original date and post
+
+			blogappservice.saveComment(comment);
+			redirectAttributes.addFlashAttribute("message", "Comment updated successfully!");
+		} else {
+			redirectAttributes.addFlashAttribute("error", "Comment not found!");
+		}
+
+		return "redirect:/posts/" + postId;
+	}
+
+	// Delete comment
+	@GetMapping("/posts/{postId}/comments/{commentId}/delete")
+	public String deleteComment(@PathVariable UUID postId,
+								@PathVariable UUID commentId,
+								RedirectAttributes redirectAttributes) {
+
+		Optional<PostCommentModel> comment = blogappservice.findCommentById(commentId);
+
+		if (comment.isPresent() && comment.get().getPost().getId().equals(postId)) {
+			blogappservice.deleteComment(comment.get());
+			redirectAttributes.addFlashAttribute("message", "Comment deleted successfully!");
+		} else {
+			redirectAttributes.addFlashAttribute("error", "Comment not found!");
+		}
+
+		return "redirect:/posts/" + postId;
 	}
 }

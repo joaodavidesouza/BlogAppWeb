@@ -7,8 +7,10 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.web.BlogApp.model.PostCommentModel;
 import com.web.BlogApp.model.PostModel;
 import com.web.BlogApp.repository.BlogAppRepository;
+import com.web.BlogApp.repository.PostCommentRepository;
 
 import jakarta.transaction.Transactional;
 
@@ -17,6 +19,9 @@ public class BlogAppServiceImpl implements BlogAppService {
 
 	@Autowired
 	BlogAppRepository blogapprepository;
+
+	@Autowired
+	PostCommentRepository commentRepository;
 
 	@Override
 	public List<PostModel> findAll() {
@@ -39,5 +44,30 @@ public class BlogAppServiceImpl implements BlogAppService {
 		blogapprepository.delete(post);
 	}
 
-	// Removed all commented out code related to PostComentarioModel
+	// Comment related methods
+	@Override
+	public List<PostCommentModel> findAllComments() {
+		return commentRepository.findAll();
+	}
+
+	@Override
+	public List<PostCommentModel> findCommentsByPostId(UUID postId) {
+		return commentRepository.findByPostId(postId);
+	}
+
+	@Override
+	public Optional<PostCommentModel> findCommentById(UUID id) {
+		return commentRepository.findById(id);
+	}
+
+	@Override
+	public PostCommentModel saveComment(PostCommentModel comment) {
+		return commentRepository.save(comment);
+	}
+
+	@Override
+	@Transactional
+	public void deleteComment(PostCommentModel comment) {
+		commentRepository.delete(comment);
+	}
 }

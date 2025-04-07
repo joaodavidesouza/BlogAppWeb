@@ -1,16 +1,20 @@
 package com.web.BlogApp.model;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 
@@ -36,7 +40,8 @@ public class PostModel {
 	@Column(columnDefinition="text")
 	private String texto;
 
-	// Removed orphaned @OneToMany annotation and related commented code
+	@OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<PostCommentModel> comments = new ArrayList<>();
 
 	public UUID getId() {
 		return id;
@@ -76,5 +81,23 @@ public class PostModel {
 
 	public void setTexto(String texto) {
 		this.texto = texto;
+	}
+
+	public List<PostCommentModel> getComments() {
+		return comments;
+	}
+
+	public void setComments(List<PostCommentModel> comments) {
+		this.comments = comments;
+	}
+
+	public void addComment(PostCommentModel comment) {
+		comments.add(comment);
+		comment.setPost(this);
+	}
+
+	public void removeComment(PostCommentModel comment) {
+		comments.remove(comment);
+		comment.setPost(null);
 	}
 }
