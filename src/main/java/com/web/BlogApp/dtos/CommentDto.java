@@ -1,4 +1,6 @@
 package com.web.BlogApp.dtos;
 
-public record CommentDto(String author, String content) {
+import jakarta.validation.constraints.NotBlank;
+
+public record CommentDto(@NotBlank String author, @NotBlank String content) {
 }

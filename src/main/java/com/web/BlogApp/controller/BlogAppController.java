@@ -166,9 +166,18 @@ public class BlogAppController {
 	public String addComment(@PathVariable UUID postId,
 							 @Valid @ModelAttribute("commentDto") CommentDto commentDto,
 							 BindingResult bindingResult,
-							 RedirectAttributes redirectAttributes) {
+							 RedirectAttributes redirectAttributes,
+							 Model model) {
 
+		// If validation errors, fetch the post again and return to the post details page
 		if (bindingResult.hasErrors()) {
+			Optional<PostModel> post = blogappservice.findById(postId);
+			if (post.isPresent()) {
+				model.addAttribute("post", post.get());
+				model.addAttribute("commentDto", commentDto);
+				model.addAttribute("error", "Please fill out all comment fields");
+				return "postDetails";
+			}
 			return "redirect:/posts/" + postId;
 		}
 
@@ -220,9 +229,12 @@ public class BlogAppController {
 								@PathVariable UUID commentId,
 								@Valid @ModelAttribute("commentDto") CommentDto commentDto,
 								BindingResult bindingResult,
+								Model model,
 								RedirectAttributes redirectAttributes) {
 
 		if (bindingResult.hasErrors()) {
+			model.addAttribute("postId", postId);
+			model.addAttribute("commentId", commentId);
 			return "editCommentForm";
 		}
 
