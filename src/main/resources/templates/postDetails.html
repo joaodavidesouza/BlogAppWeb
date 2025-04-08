@@ -37,8 +37,7 @@
             background-image: linear-gradient(135deg, #053d82 0%, #0c6cd9 100%);
             background-attachment: fixed;
             margin: 0;
-            padding: 0;
-            padding-bottom: calc(var(--taskbar-height) + 20px);
+            padding: 0 0 calc(var(--taskbar-height) + 20px);
             line-height: 1.6;
             min-height: 100vh;
             overflow-x: hidden;
@@ -142,38 +141,10 @@
         }
 
         /* Main Content Areas */
-        .blog-container,
-        .post-container {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
 
         /* Blog Cards */
-        .blog-card {
-            margin-bottom: 30px;
-        }
-
-        .blog-meta,
-        .post-meta {
-            color: #777;
-            font-size: 14px;
-        }
-
-        .blog-excerpt {
-            margin-top: 15px;
-        }
 
         /* Form Container */
-        .form-container,
-        .login-container {
-            max-width: 700px;
-            margin: 50px auto;
-        }
-
-        .login-container {
-            max-width: 500px;
-        }
 
         /* Form Elements */
         .form-label {
@@ -218,29 +189,6 @@
             color: white;
         }
 
-        .btn-win7-gray {
-            background: var(--button-bg);
-            color: var(--text-color);
-            border: 1px solid rgba(0, 0, 0, 0.1);
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-        }
-
-        .btn-win7-gray:hover {
-            background: var(--button-hover);
-        }
-
-        .btn-win7-outline {
-            background: transparent;
-            color: white;
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-        }
-
-        .btn-win7-outline:hover {
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-        }
-
         .btn-win7-red {
             background: var(--delete-bg);
             color: white;
@@ -278,37 +226,6 @@
         }
 
         /* Login Page Specific */
-        .account-info {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-
-        .user-avatar {
-            width: 60px;
-            height: 60px;
-            background-color: #eee;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            color: #888;
-        }
-
-        .account-name {
-            font-size: 18px;
-            font-weight: 600;
-        }
-
-        .demo-accounts {
-            margin-top: 20px;
-            padding: 15px;
-            background-color: rgba(200, 220, 255, 0.2);
-            border-radius: 4px;
-            border: 1px dashed #ccc;
-        }
 
         /* Vista Taskbar */
         .vista-taskbar {
@@ -373,29 +290,6 @@
         }
 
         /* Summernote Editor Adjustments */
-        .note-editor.note-frame {
-            border-radius: 4px;
-            border: 1px solid #ccc;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-        }
-
-        .note-toolbar {
-            background: var(--header-bg);
-            border-bottom: 1px solid #ddd;
-            border-radius: 4px 4px 0 0;
-            padding: 5px;
-        }
-
-        .note-btn {
-            border-radius: 4px;
-            background: var(--button-bg);
-            border: 1px solid rgba(0, 0, 0, 0.1);
-            color: var(--text-color);
-        }
-
-        .note-btn:hover {
-            background: var(--button-hover);
-        }
 
         /* Responsive adjustments */
         @media (max-width: 768px) {
@@ -434,10 +328,6 @@
         }
 
         /* Make summernote content area easier to read */
-        .note-editable {
-            background-color: white;
-            padding: 10px;
-        }
     </style>
 </head>
 <body>

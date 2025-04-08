@@ -35,8 +35,7 @@
       background-image: linear-gradient(135deg, #053d82 0%, #0c6cd9 100%);
       background-attachment: fixed;
       margin: 0;
-      padding: 0;
-      padding-bottom: calc(var(--taskbar-height) + 20px);
+      padding: 0 0 calc(var(--taskbar-height) + 20px);
       line-height: 1.6;
       min-height: 100vh;
       overflow-x: hidden;
@@ -120,54 +119,12 @@
     }
 
     /* Navigation Bar */
-    .navbar {
-      background: var(--header-bg);
-      box-shadow: 0 2px 5px var(--shadow-color);
-      border-bottom: 1px solid var(--border-color);
-      margin-bottom: 30px;
-      padding: 10px 0;
-    }
-
-    .navbar-brand {
-      font-size: 24px;
-      font-weight: 600;
-      color: white;
-      text-decoration: none;
-    }
-
-    .navbar-brand:hover {
-      color: var(--primary-hover);
-    }
 
     /* Main Content Areas */
-    .blog-container,
-    .post-container {
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 0 20px;
-    }
 
     /* Blog Cards */
-    .blog-card {
-      margin-bottom: 30px;
-    }
-
-    .blog-meta,
-    .post-meta {
-      color: #777;
-      font-size: 14px;
-    }
-
-    .blog-excerpt {
-      margin-top: 15px;
-    }
 
     /* Form Container */
-    .form-container,
-    .login-container {
-      max-width: 700px;
-      margin: 50px auto;
-    }
 
     .login-container {
       max-width: 500px;
@@ -216,64 +173,9 @@
       color: white;
     }
 
-    .btn-win7-gray {
-      background: var(--button-bg);
-      color: var(--text-color);
-      border: 1px solid rgba(0, 0, 0, 0.1);
-      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-    }
-
-    .btn-win7-gray:hover {
-      background: var(--button-hover);
-    }
-
-    .btn-win7-outline {
-      background: transparent;
-      color: white;
-      border: 1px solid rgba(255, 255, 255, 0.5);
-      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-    }
-
-    .btn-win7-outline:hover {
-      background: rgba(255, 255, 255, 0.1);
-      color: white;
-    }
-
-    .btn-win7-red {
-      background: var(--delete-bg);
-      color: white;
-      border: 1px solid rgba(0, 0, 0, 0.1);
-      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-    }
-
-    .btn-win7-red:hover {
-      background: var(--delete-hover);
-      color: white;
-    }
-
     /* Post actions */
-    .post-actions {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
 
     /* Comments Section */
-    .comments-section {
-      margin-top: 40px;
-    }
-
-    .comment {
-      background-color: rgba(255, 255, 255, 0.5);
-      border-radius: 4px;
-      padding: 15px;
-      margin-bottom: 15px;
-      border: 1px solid var(--border-color);
-    }
-
-    .comment-header {
-      margin-bottom: 5px;
-    }
 
     /* Login Page Specific */
     .account-info {
@@ -347,23 +249,6 @@
     }
 
     /* Alerts */
-    .alert {
-      padding: 15px;
-      border-radius: 4px;
-      margin-bottom: 20px;
-    }
-
-    .alert-success {
-      background-color: rgba(40, 167, 69, 0.1);
-      border: 1px solid rgba(40, 167, 69, 0.2);
-      color: #28a745;
-    }
-
-    .alert-danger {
-      background-color: rgba(220, 53, 69, 0.1);
-      border: 1px solid rgba(220, 53, 69, 0.2);
-      color: #dc3545;
-    }
 
     /* Text colors */
     .text-muted {
@@ -371,29 +256,6 @@
     }
 
     /* Summernote Editor Adjustments */
-    .note-editor.note-frame {
-      border-radius: 4px;
-      border: 1px solid #ccc;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    }
-
-    .note-toolbar {
-      background: var(--header-bg);
-      border-bottom: 1px solid #ddd;
-      border-radius: 4px 4px 0 0;
-      padding: 5px;
-    }
-
-    .note-btn {
-      border-radius: 4px;
-      background: var(--button-bg);
-      border: 1px solid rgba(0, 0, 0, 0.1);
-      color: var(--text-color);
-    }
-
-    .note-btn:hover {
-      background: var(--button-hover);
-    }
 
     /* Responsive adjustments */
     @media (max-width: 768px) {
@@ -408,10 +270,6 @@
       .aero-title-bar {
         margin: -15px -15px 15px -15px;
         padding: 8px 12px;
-      }
-
-      .post-actions {
-        flex-direction: column;
       }
 
       .post-actions .btn {
@@ -432,10 +290,6 @@
     }
 
     /* Make summernote content area easier to read */
-    .note-editable {
-      background-color: white;
-      padding: 10px;
-    }
   </style>
 </head>
 <body>
