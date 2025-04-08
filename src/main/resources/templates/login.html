@@ -6,7 +6,438 @@
   <title>Login | Web Blog</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@300;400;600&display=swap" rel="stylesheet">
-  <style></style></head>
+  <style>
+    /* Windows Vista Theme CSS */
+    :root {
+      --primary-color: #0c6cd9;
+      --primary-hover: #0a5fc0;
+      --text-color: #333;
+      --light-text: #fff;
+      --card-bg: rgba(255, 255, 255, 0.85);
+      --border-color: rgba(200, 200, 200, 0.5);
+      --header-bg: linear-gradient(to bottom, #2875e0, #2875e0);
+      --button-bg: linear-gradient(to bottom, #f0f0f0, #d8d8d8);
+      --button-hover: linear-gradient(to bottom, #e8e8e8, #c8c8c8);
+      --button-primary-bg: linear-gradient(to bottom, #61a6ff, #2875e0);
+      --button-primary-hover: linear-gradient(to bottom, #4f95ed, #1664cf);
+      --delete-bg: linear-gradient(to bottom, #ff9999, #e06060);
+      --delete-hover: linear-gradient(to bottom, #ff8080, #d04040);
+      --taskbar-bg: linear-gradient(to bottom, #255bc1, #0c348e);
+      --taskbar-height: 40px;
+      --shadow-color: rgba(0, 0, 0, 0.2);
+      --glow-color: rgba(100, 180, 255, 0.5);
+    }
+
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      color: var(--text-color);
+      background-color: #ffffff;
+      background-image: linear-gradient(135deg, #053d82 0%, #0c6cd9 100%);
+      background-attachment: fixed;
+      margin: 0;
+      padding: 0;
+      padding-bottom: calc(var(--taskbar-height) + 20px);
+      line-height: 1.6;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    /* Vista Orb (the blue background glow) */
+    .vista-orb {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      background: radial-gradient(ellipse at center, rgba(12, 108, 217, 0.3) 0%, rgba(12, 108, 217, 0) 70%);
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    /* Aero Glass Effect */
+    .aero-glass {
+      background-color: var(--card-bg);
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      border-radius: 8px;
+      box-shadow: 0 10px 25px var(--shadow-color), 0 2px 3px rgba(0, 0, 0, 0.06);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      padding: 20px;
+      margin-bottom: 30px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Title Bar */
+    .aero-title-bar {
+      background: var(--header-bg);
+      margin: -20px -20px 20px -20px;
+      padding: 10px 15px;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-radius: 8px 8px 0 0;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .aero-title-text {
+      font-weight: 600;
+      font-size: 14px;
+      color: white; /* Changed from var(--text-color) to white for visibility */
+    }
+
+    /* Window Controls */
+    .window-controls {
+      display: flex;
+      gap: 6px;
+    }
+
+    .window-button {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background-color: #ccc;
+      cursor: pointer;
+    }
+
+    .window-minimize {
+      background-color: #ffd700;
+    }
+
+    .window-maximize {
+      background-color: #32cd32;
+    }
+
+    .window-close {
+      background-color: #ff6347;
+    }
+
+    /* Navigation Bar */
+    .navbar {
+      background: var(--header-bg);
+      box-shadow: 0 2px 5px var(--shadow-color);
+      border-bottom: 1px solid var(--border-color);
+      margin-bottom: 30px;
+      padding: 10px 0;
+    }
+
+    .navbar-brand {
+      font-size: 24px;
+      font-weight: 600;
+      color: white;
+      text-decoration: none;
+    }
+
+    .navbar-brand:hover {
+      color: var(--primary-hover);
+    }
+
+    /* Main Content Areas */
+    .blog-container,
+    .post-container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* Blog Cards */
+    .blog-card {
+      margin-bottom: 30px;
+    }
+
+    .blog-meta,
+    .post-meta {
+      color: #777;
+      font-size: 14px;
+    }
+
+    .blog-excerpt {
+      margin-top: 15px;
+    }
+
+    /* Form Container */
+    .form-container,
+    .login-container {
+      max-width: 700px;
+      margin: 50px auto;
+    }
+
+    .login-container {
+      max-width: 500px;
+    }
+
+    /* Form Elements */
+    .form-label {
+      font-weight: 500;
+    }
+
+    .form-control {
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      padding: 8px 12px;
+      background-color: rgba(255, 255, 255, 0.8);
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+
+    .form-control:focus {
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 4px rgba(12, 108, 217, 0.2);
+    }
+
+    textarea.form-control {
+      min-height: 120px;
+    }
+
+    /* Buttons */
+    .btn {
+      border-radius: 4px;
+      padding: 8px 16px;
+      font-weight: 500;
+      transition: all 0.2s;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-win7 {
+      background: var(--button-primary-bg);
+      color: white;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-win7:hover {
+      background: var(--button-primary-hover);
+      color: white;
+    }
+
+    .btn-win7-gray {
+      background: var(--button-bg);
+      color: var(--text-color);
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-win7-gray:hover {
+      background: var(--button-hover);
+    }
+
+    .btn-win7-outline {
+      background: transparent;
+      color: white;
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-win7-outline:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+    }
+
+    .btn-win7-red {
+      background: var(--delete-bg);
+      color: white;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-win7-red:hover {
+      background: var(--delete-hover);
+      color: white;
+    }
+
+    /* Post actions */
+    .post-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    /* Comments Section */
+    .comments-section {
+      margin-top: 40px;
+    }
+
+    .comment {
+      background-color: rgba(255, 255, 255, 0.5);
+      border-radius: 4px;
+      padding: 15px;
+      margin-bottom: 15px;
+      border: 1px solid var(--border-color);
+    }
+
+    .comment-header {
+      margin-bottom: 5px;
+    }
+
+    /* Login Page Specific */
+    .account-info {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .user-avatar {
+      width: 60px;
+      height: 60px;
+      background-color: #eee;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      color: #888;
+    }
+
+    .account-name {
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .demo-accounts {
+      margin-top: 20px;
+      padding: 15px;
+      background-color: rgba(200, 220, 255, 0.2);
+      border-radius: 4px;
+      border: 1px dashed #ccc;
+    }
+
+    /* Vista Taskbar */
+    .vista-taskbar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: var(--taskbar-height);
+      background: var(--taskbar-bg);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
+      color: white; /* Changed from #ff0000 to white */
+      z-index: 1000;
+    }
+
+    .vista-start {
+      cursor: pointer;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0) 70%);
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      transition: all 0.3s;
+    }
+
+    .vista-start:hover {
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0.1) 70%);
+    }
+
+    .taskbar-time {
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    /* Alerts */
+    .alert {
+      padding: 15px;
+      border-radius: 4px;
+      margin-bottom: 20px;
+    }
+
+    .alert-success {
+      background-color: rgba(40, 167, 69, 0.1);
+      border: 1px solid rgba(40, 167, 69, 0.2);
+      color: #28a745;
+    }
+
+    .alert-danger {
+      background-color: rgba(220, 53, 69, 0.1);
+      border: 1px solid rgba(220, 53, 69, 0.2);
+      color: #dc3545;
+    }
+
+    /* Text colors */
+    .text-muted {
+      color: #777;
+    }
+
+    /* Summernote Editor Adjustments */
+    .note-editor.note-frame {
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .note-toolbar {
+      background: var(--header-bg);
+      border-bottom: 1px solid #ddd;
+      border-radius: 4px 4px 0 0;
+      padding: 5px;
+    }
+
+    .note-btn {
+      border-radius: 4px;
+      background: var(--button-bg);
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      color: var(--text-color);
+    }
+
+    .note-btn:hover {
+      background: var(--button-hover);
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .container {
+        padding: 15px;
+      }
+
+      .aero-glass {
+        padding: 15px;
+      }
+
+      .aero-title-bar {
+        margin: -15px -15px 15px -15px;
+        padding: 8px 12px;
+      }
+
+      .post-actions {
+        flex-direction: column;
+      }
+
+      .post-actions .btn {
+        width: 100%;
+        margin-bottom: 5px;
+      }
+    }
+
+    /* Accessibility Improvements */
+    :focus {
+      outline: 2px solid var(--primary-color);
+      outline-offset: 2px;
+    }
+
+    /* For better contrast */
+    .btn {
+      font-weight: 600;
+    }
+
+    /* Make summernote content area easier to read */
+    .note-editable {
+      background-color: white;
+      padding: 10px;
+    }
+  </style>
+</head>
 <body>
 <!-- Vista glow effect -->
 <div class="vista-orb"></div>
