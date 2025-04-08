@@ -51,6 +51,13 @@
             padding: 20px;
         }
 
+        /* Blog container - ADDED PADDING */
+        .blog-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
         /* Vista Orb (the blue background glow) */
         .vista-orb {
             position: fixed;
@@ -145,30 +152,17 @@
         /* Main Content Areas */
 
         /* Blog Cards */
+        .blog-card {
+            margin-bottom: 30px;
+        }
+
+        .blog-excerpt {
+            margin-top: 15px;
+        }
 
         /* Form Container */
 
         /* Form Elements */
-        .form-label {
-            font-weight: 500;
-        }
-
-        .form-control {
-            border-radius: 4px;
-            border: 1px solid #ccc;
-            padding: 8px 12px;
-            background-color: rgba(255, 255, 255, 0.8);
-            transition: border-color 0.3s, box-shadow 0.3s;
-        }
-
-        .form-control:focus {
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 4px rgba(12, 108, 217, 0.2);
-        }
-
-        textarea.form-control {
-            min-height: 120px;
-        }
 
         /* Buttons */
         .btn {
@@ -191,18 +185,36 @@
             color: white;
         }
 
-        .btn-win7-gray {
-            background: var(--button-bg);
-            color: var(--text-color);
+        .btn-win7-outline {
+            background: transparent;
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-win7-outline:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .btn-win7-red {
+            background: var(--delete-bg);
+            color: white;
             border: 1px solid rgba(0, 0, 0, 0.1);
             box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
         }
 
-        .btn-win7-gray:hover {
-            background: var(--button-hover);
+        .btn-win7-red:hover {
+            background: var(--delete-hover);
+            color: white;
         }
 
         /* Post actions */
+        .post-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
 
         /* Comments Section */
 
@@ -247,6 +259,17 @@
         }
 
         /* Alerts */
+        .alert {
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+
+        .alert-success {
+            background-color: rgba(40, 167, 69, 0.1);
+            border: 1px solid rgba(40, 167, 69, 0.2);
+            color: #28a745;
+        }
 
         /* Text colors */
 
@@ -258,6 +281,10 @@
                 padding: 15px;
             }
 
+            .blog-container {
+                padding: 0 15px;
+            }
+
             .aero-glass {
                 padding: 15px;
             }
@@ -265,6 +292,10 @@
             .aero-title-bar {
                 margin: -15px -15px 15px -15px;
                 padding: 8px 12px;
+            }
+
+            .post-actions {
+                flex-direction: column;
             }
 
             .post-actions .btn {
