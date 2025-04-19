@@ -25,25 +25,53 @@ import com.web.BlogApp.service.BlogAppService;
 
 import jakarta.validation.Valid;
 
+/**
+ * Controlador principal da aplicação BlogApp.
+ *
+ * Este controlador gerencia todas as requisições HTTP relacionadas a posts e comentários,
+ * implementando o padrão MVC (Model-View-Controller) para separar a lógica de apresentação
+ * da lógica de negócios.
+ */
 @Controller
 public class BlogAppController {
 
+	/**
+	 * O serviço que contém a lógica de negócios para posts e comentários.
+	 * Injetado automaticamente pelo Spring através da anotação @Autowired.
+	 */
 	@Autowired
 	BlogAppService blogappservice;
 
-	// Root path redirection
+	/**
+	 * Redireciona o caminho raiz para a listagem de posts.
+	 * Esta é uma prática comum para não deixar a URL raiz sem conteúdo.
+	 *
+	 * @return String de redirecionamento para o endpoint de listagem de posts
+	 */
 	@GetMapping("/")
 	public String rootRedirect() {
 		return "redirect:/posts";
 	}
 
-	// Login page
+	/**
+	 * Exibe a página de login personalizada.
+	 *
+	 * @return Nome da view de login que será renderizada
+	 */
 	@GetMapping("/login")
 	public String login() {
 		return "login";
 	}
 
-	// List all posts
+	/**
+	 * Lista todos os posts do blog.
+	 * Este método:
+	 * 1. Recupera todos os posts do serviço
+	 * 2. Adiciona os posts ao modelo
+	 * 3. Retorna o ModelAndView que combina dados e template
+	 *
+	 * @return ModelAndView contendo a lista de posts e a view a ser renderizada
+	 */
 	@GetMapping(value = "/posts")
 	public ModelAndView getPosts() {
 		ModelAndView mv = new ModelAndView("posts");
@@ -52,7 +80,18 @@ public class BlogAppController {
 		return mv;
 	}
 
-	// Show post details
+	/**
+	 * Exibe os detalhes de um post específico, incluindo seus comentários.
+	 *
+	 * Este método:
+	 * 1. Busca o post pelo ID fornecido
+	 * 2. Se encontrado, prepara a view de detalhes com o post e um DTO vazio para novos comentários
+	 * 3. Se não encontrado, redireciona para a lista de posts com mensagem de erro
+	 *
+	 * @param id O UUID do post a ser exibido
+	 * @param redirectAttributes Atributos para mensagens flash após redirecionamento
+	 * @return ModelAndView com detalhes do post ou redirecionamento se não encontrado
+	 */
 	@GetMapping(value = "/posts/{id}")
 	public ModelAndView getPostDetails(@PathVariable UUID id, RedirectAttributes redirectAttributes) {
 		Optional<PostModel> post = blogappservice.findById(id);
@@ -63,20 +102,44 @@ public class BlogAppController {
 			mv.addObject("commentDto", new CommentDto(null, null));
 			return mv;
 		} else {
-			// Handle case when post doesn't exist
+			// Tratamento para caso de post não encontrado
 			redirectAttributes.addFlashAttribute("error", "Post not found!");
 			return new ModelAndView("redirect:/posts");
 		}
 	}
 
-	// Prepare form for new post
+	/**
+	 * Exibe o formulário para criação de um novo post.
+	 *
+	 * Este método adiciona um DTO vazio ao modelo para ser preenchido pelo formulário.
+	 * Utiliza o padrão DTO (Data Transfer Object) para separar os dados do formulário
+	 * da entidade de domínio.
+	 *
+	 * @param model Modelo para adicionar o DTO vazio
+	 * @return Nome da view do formulário a ser renderizada
+	 */
 	@GetMapping(value = "/newpost")
 	public String getPostForm(Model model) {
 		model.addAttribute("postDto", new BlogAppRecordDto(null, null, null));
 		return "newpostForm";
 	}
 
-	// Save new post
+	/**
+	 * Salva um novo post a partir dos dados do formulário.
+	 *
+	 * Este método:
+	 * 1. Valida os dados do post usando as anotações de validação do Jakarta
+	 * 2. Se inválido, retorna ao formulário mantendo os dados inseridos
+	 * 3. Se válido, converte o DTO para uma entidade e salva através do serviço
+	 *
+	 * Utiliza o padrão PRG (Post-Redirect-Get) para evitar reenvios de formulário
+	 * acidentais ao atualizar a página.
+	 *
+	 * @param postDto DTO contendo os dados do formulário
+	 * @param bindingResult Resultados da validação do formulário
+	 * @param redirectAttributes Atributos para mensagens flash após redirecionamento
+	 * @return String indicando redirecionamento ou nome da view se houver erros
+	 */
 	@PostMapping(value = "/newpost")
 	public String savePost(@Valid @ModelAttribute("postDto") BlogAppRecordDto postDto,
 						   BindingResult bindingResult,
@@ -97,7 +160,18 @@ public class BlogAppController {
 		return "redirect:/posts";
 	}
 
-	// Delete post
+	/**
+	 * Remove um post específico do blog.
+	 *
+	 * Este método:
+	 * 1. Busca o post pelo ID fornecido
+	 * 2. Se encontrado, exclui o post e redireciona com mensagem de sucesso
+	 * 3. Se não encontrado, redireciona com mensagem de erro
+	 *
+	 * @param id O UUID do post a ser excluído
+	 * @param redirectAttributes Atributos para mensagens flash após redirecionamento
+	 * @return String de redirecionamento para a listagem de posts
+	 */
 	@GetMapping("/posts/delete/{id}")
 	public String deletePost(@PathVariable UUID id, RedirectAttributes redirectAttributes) {
 		Optional<PostModel> post = blogappservice.findById(id);
@@ -112,7 +186,19 @@ public class BlogAppController {
 		return "redirect:/posts";
 	}
 
-	// Show edit form
+	/**
+	 * Exibe o formulário para edição de um post existente.
+	 *
+	 * Este método:
+	 * 1. Busca o post pelo ID fornecido
+	 * 2. Se encontrado, prepara o formulário com os dados atuais do post
+	 * 3. Se não encontrado, redireciona para a lista de posts com mensagem de erro
+	 *
+	 * @param id O UUID do post a ser editado
+	 * @param model Modelo para adicionar os dados do post e seu ID
+	 * @param redirectAttributes Atributos para mensagens flash após redirecionamento
+	 * @return Nome da view do formulário ou string de redirecionamento se não encontrado
+	 */
 	@GetMapping("/posts/edit/{id}")
 	public String getEditPostForm(@PathVariable UUID id, Model model, RedirectAttributes redirectAttributes) {
 		Optional<PostModel> post = blogappservice.findById(id);
@@ -132,7 +218,21 @@ public class BlogAppController {
 		}
 	}
 
-	// Update post
+	/**
+	 * Atualiza um post existente com os dados do formulário.
+	 *
+	 * Este método:
+	 * 1. Valida os dados do post
+	 * 2. Se inválido, retorna ao formulário mantendo os dados inseridos
+	 * 3. Se válido, busca o post existente e atualiza apenas os campos editáveis
+	 *    (mantendo a data original e outros campos que não devem ser alterados)
+	 *
+	 * @param id O UUID do post a ser atualizado
+	 * @param postDto DTO contendo os dados do formulário
+	 * @param bindingResult Resultados da validação do formulário
+	 * @param redirectAttributes Atributos para mensagens flash após redirecionamento
+	 * @return String indicando redirecionamento ou nome da view se houver erros
+	 */
 	@PostMapping("/posts/edit/{id}")
 	public String updatePost(@PathVariable UUID id,
 							 @Valid @ModelAttribute("postDto") BlogAppRecordDto postDto,
@@ -150,7 +250,7 @@ public class BlogAppController {
 			post.setAutor(postDto.autor());
 			post.setTitulo(postDto.titulo());
 			post.setTexto(postDto.texto());
-			// Keep the original date
+			// Mantém a data original
 
 			blogappservice.save(post);
 			redirectAttributes.addFlashAttribute("message", "Post updated successfully!");
@@ -161,7 +261,24 @@ public class BlogAppController {
 		return "redirect:/posts";
 	}
 
-	// Add a comment to a post
+	/**
+	 * Adiciona um comentário a um post específico.
+	 *
+	 * Este método:
+	 * 1. Valida os dados do comentário
+	 * 2. Se inválido, retorna para o formulário com erros
+	 * 3. Se válido, salva o comentário e redireciona para a página de detalhes do post
+	 *
+	 * Utiliza o padrão PRG (Post-Redirect-Get) para evitar reenvios de formulário
+	 * acidentais ao atualizar a página.
+	 *
+	 * @param postId ID do post ao qual adicionar o comentário
+	 * @param commentDto DTO com dados do comentário a ser adicionado
+	 * @param bindingResult Resultados da validação do formulário
+	 * @param redirectAttributes Atributos para mensagens flash após redirecionamento
+	 * @param model Modelo para adicionar atributos quando retornando à mesma página
+	 * @return String indicando redirecionamento ou nome da view
+	 */
 	@PostMapping("/posts/{postId}/comments")
 	public String addComment(@PathVariable UUID postId,
 							 @Valid @ModelAttribute("commentDto") CommentDto commentDto,
@@ -169,7 +286,7 @@ public class BlogAppController {
 							 RedirectAttributes redirectAttributes,
 							 Model model) {
 
-		// If validation errors, fetch the post again and return to the post details page
+		// Tratamento de erros de validação
 		if (bindingResult.hasErrors()) {
 			Optional<PostModel> post = blogappservice.findById(postId);
 			if (post.isPresent()) {
@@ -184,6 +301,7 @@ public class BlogAppController {
 		Optional<PostModel> post = blogappservice.findById(postId);
 
 		if (post.isPresent()) {
+			// Criação e configuração do objeto de comentário
 			PostCommentModel comment = new PostCommentModel();
 			comment.setAuthor(commentDto.author());
 			comment.setContent(commentDto.content());
@@ -196,10 +314,25 @@ public class BlogAppController {
 			redirectAttributes.addFlashAttribute("error", "Post not found!");
 		}
 
+		// Redirecionamento seguindo o padrão PRG (Post-Redirect-Get)
 		return "redirect:/posts/" + postId;
 	}
 
-	// Show edit comment form
+	/**
+	 * Exibe o formulário para edição de um comentário existente.
+	 *
+	 * Este método:
+	 * 1. Busca o comentário pelo ID fornecido
+	 * 2. Verifica se o comentário existe e pertence ao post especificado
+	 * 3. Se encontrado, prepara o formulário com os dados atuais do comentário
+	 * 4. Se não encontrado ou inválido, redireciona com mensagem de erro
+	 *
+	 * @param postId O UUID do post ao qual o comentário pertence
+	 * @param commentId O UUID do comentário a ser editado
+	 * @param model Modelo para adicionar os dados do comentário e IDs
+	 * @param redirectAttributes Atributos para mensagens flash após redirecionamento
+	 * @return Nome da view do formulário ou string de redirecionamento se não encontrado
+	 */
 	@GetMapping("/posts/{postId}/comments/{commentId}/edit")
 	public String getEditCommentForm(@PathVariable UUID postId,
 									 @PathVariable UUID commentId,
@@ -223,7 +356,24 @@ public class BlogAppController {
 		}
 	}
 
-	// Update comment
+	/**
+	 * Atualiza um comentário existente com os dados do formulário.
+	 *
+	 * Este método:
+	 * 1. Valida os dados do comentário
+	 * 2. Se inválido, retorna ao formulário mantendo os dados inseridos
+	 * 3. Se válido, busca o comentário existente e atualiza apenas os campos editáveis
+	 *    (mantendo a data original e a referência ao post)
+	 * 4. Verifica se o comentário realmente pertence ao post especificado
+	 *
+	 * @param postId O UUID do post ao qual o comentário pertence
+	 * @param commentId O UUID do comentário a ser atualizado
+	 * @param commentDto DTO contendo os dados do formulário
+	 * @param bindingResult Resultados da validação do formulário
+	 * @param model Modelo para adicionar atributos quando retornando à mesma página
+	 * @param redirectAttributes Atributos para mensagens flash após redirecionamento
+	 * @return String indicando redirecionamento ou nome da view se houver erros
+	 */
 	@PostMapping("/posts/{postId}/comments/{commentId}")
 	public String updateComment(@PathVariable UUID postId,
 								@PathVariable UUID commentId,
@@ -244,7 +394,7 @@ public class BlogAppController {
 			PostCommentModel comment = existingComment.get();
 			comment.setAuthor(commentDto.author());
 			comment.setContent(commentDto.content());
-			// Keep the original date and post
+			// Mantém a data original e a referência ao post
 
 			blogappservice.saveComment(comment);
 			redirectAttributes.addFlashAttribute("message", "Comment updated successfully!");
@@ -255,7 +405,20 @@ public class BlogAppController {
 		return "redirect:/posts/" + postId;
 	}
 
-	// Delete comment
+	/**
+	 * Remove um comentário específico de um post.
+	 *
+	 * Este método:
+	 * 1. Busca o comentário pelo ID fornecido
+	 * 2. Verifica se o comentário existe e pertence ao post especificado
+	 * 3. Se encontrado e válido, exclui o comentário
+	 * 4. Redireciona para a página de detalhes do post com mensagem apropriada
+	 *
+	 * @param postId O UUID do post ao qual o comentário pertence
+	 * @param commentId O UUID do comentário a ser excluído
+	 * @param redirectAttributes Atributos para mensagens flash após redirecionamento
+	 * @return String de redirecionamento para a página de detalhes do post
+	 */
 	@GetMapping("/posts/{postId}/comments/{commentId}/delete")
 	public String deleteComment(@PathVariable UUID postId,
 								@PathVariable UUID commentId,
