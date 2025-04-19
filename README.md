@@ -1,104 +1,140 @@
-# Web Blog Application
+# 📝 BlogApp - Spring Boot Web Blog Application
 
-## Overview
+**BlogApp** é uma aplicação web de blog desenvolvida com **Spring Boot** que permite criar, visualizar, editar e excluir posts e comentários. A aplicação inclui autenticação de usuários com **Spring Security**, design responsivo com **Bootstrap** e persistência com **MySQL**.
 
-This is a Spring Boot-based web blog application that allows users to create, view, and delete blog posts. The application uses Thymeleaf for templating, Spring Data JPA for database interactions, and Bootstrap for responsive design.
+---
 
-## Features
+## 📌 Funcionalidades
 
-- Create new blog posts
-- View list of all posts
-- View detailed post information
-- Delete existing posts
-- Responsive design with Bootstrap
-- MySQL database integration
+### 📃 Posts
+- ✅ Listar todos os posts
+- 🆕 Criar novos posts
+- 🔍 Visualizar detalhes de um post
+- ✏️ Editar posts existentes
+- ❌ Excluir posts
 
-## Technologies Used
+### 💬 Comentários
+- 💬 Adicionar comentários aos posts
+- ✏️ Editar comentários
+- 🗑️ Excluir comentários
+
+### 🔐 Segurança
+- 🔒 Autenticação de usuários com Spring Security
+- 👤 Dois usuários pré-configurados: `admin` e `user`
+- 🔐 Rotas públicas e rotas protegidas por perfil
+
+---
+
+## 🛠️ Tecnologias Utilizadas
+
+- **Java 17**
+- **Spring Boot 3.x**
+- **Spring Data JPA**
+- **Spring Security**
+- **Thymeleaf**
+- **MySQL**
+- **Bootstrap 5**
+- **Maven**
+
+---
+
+## 🗂️ Estrutura do Projeto (MVC)
+
+```
+com.web.BlogApp
+├── BlogAppApplication.java       # Classe principal
+├── configuration/                # Configurações do sistema e segurança
+├── controller/                   # Controladores REST/HTTP
+├── dtos/                         # Objetos de Transferência de Dados (DTOs)
+├── model/                        # Entidades JPA (Posts e Comentários)
+├── repository/                   # Interfaces JPA para o banco de dados
+├── service/                      # Camada de serviços (lógica de negócios)
+└── utils/                        # Classes utilitárias
+```
+
+---
+
+## 💾 Banco de Dados
+
+Banco: `blogappdbweb`
+
+### Tabela `TB_POST`
+
+| Campo   | Tipo   | Descrição               |
+|---------|--------|-------------------------|
+| `id`    | UUID   | Identificador único     |
+| `autor` | String | Nome do autor           |
+| `data`  | Date   | Data de criação         |
+| `titulo`| String | Título da postagem      |
+| `texto` | String | Conteúdo da postagem    |
+
+---
+
+## 🚀 Como Executar
+
+### ✅ Pré-requisitos
 
 - Java 17
-- Spring Boot 3.x
-- Spring Data JPA
-- Thymeleaf
-- MySQL
-- Bootstrap 5
 - Maven
+- MySQL Server
 
-## Prerequisites
+### 🧬 Passos para rodar o projeto
 
-- Java Development Kit (JDK) 17
-- MySQL Database
-- Maven
-
-## Installation and Setup
-
-### 1. Clone the Repository
+#### 1. Clone o Repositório
 
 ```bash
 git clone https://github.com/yourusername/web-blog-application.git
 cd web-blog-application
 ```
 
-### 2. Database Configuration
+#### 2. Crie o Banco de Dados
 
-- Create a MySQL database named `blogappdbweb`
-- Update database credentials in `src/main/resources/application.properties`
+No seu MySQL:
 
-```properties
-spring.datasource.url=jdbc:mysql://localhost/blogappdbweb?createIfNotExists=true&allowPublicKeyRetrieval=true&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=America/Sao_Paulo&SameSite=None
-spring.datasource.username=your_username
-spring.datasource.password=your_password
+```sql
+CREATE DATABASE blogappdbweb;
 ```
 
-### 3. Build and Run
+#### 3. Configure o `application.properties`
+
+Edite `src/main/resources/application.properties`:
+
+```properties
+spring.datasource.url=jdbc:mysql://localhost/blogappdbweb?createIfNotExists=true&allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=America/Sao_Paulo
+spring.datasource.username=seu_usuario
+spring.datasource.password=sua_senha
+
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+```
+
+#### 4. Compile e Rode
 
 ```bash
-# Build the project
 mvn clean install
-
-# Run the application
 mvn spring-boot:run
 ```
 
-The application will be available at `http://localhost:8080`
+Acesse a aplicação em: [http://localhost:8080](http://localhost:8080)
 
-## Project Structure
+---
 
-- `src/main/java/com/web/BlogApp/`: Main application package
-  - `controller/`: Web controllers
-  - `model/`: Database entities
-  - `repository/`: Data access repositories
-  - `service/`: Business logic services
-  - `dtos/`: Data Transfer Objects
-  - `configuration/`: Application configurations
-  - `utils/`: Utility classes
+## 👤 Usuários de Teste
 
-- `src/main/resources/`
-  - `templates/`: Thymeleaf HTML templates
-  - `application.properties`: Application configuration
+| Usuário | Senha     | Perfil  |
+|---------|-----------|---------|
+| admin   | admin123  | ADMIN   |
+| user    | user123   | USER    |
 
-## Database Schema
+---
 
-The application uses a `TB_POST` table with the following columns:
-- `id`: Unique identifier (UUID)
-- `autor`: Post author
-- `data`: Post creation date
-- `titulo`: Post title
-- `texto`: Post content
+## 🧪 Dados de Teste
 
-## Contributing
+O sistema carrega automaticamente dados de exemplo ao iniciar a aplicação, facilitando testes e visualização da interface.
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+---
 
-## License
+## 🧾 Licença
 
-Distributed under the MIT License. See `LICENSE` for more information.
+Distribuído sob a licença **MIT**. Veja o arquivo `LICENSE` para mais informações.
 
-## Contact
-
-Your Name - your.email@example.com
-
-Project Link: [https://github.com/yourusername/web-blog-application](https://github.com/yourusername/web-blog-application)
