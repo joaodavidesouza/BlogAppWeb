@@ -191,94 +191,9 @@
             color: var(--text-primary);
         }
 
-        .btn-danger {
-            background-color: var(--danger);
-            border-color: var(--danger);
-            color: white;
-        }
-
-        .btn-danger:hover, .btn-danger:focus {
-            background-color: var(--danger-hover);
-            border-color: var(--danger-hover);
-            color: white;
-        }
-
         /* Footer */
-        .footer {
-            background-color: var(--bg-secondary);
-            padding: 1rem 0;
-            text-align: center;
-            color: var(--text-secondary);
-            border-top: 1px solid var(--border-color);
-            margin-top: 3rem;
-        }
-
-        .footer-links {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 1rem;
-        }
-
-        .footer-link {
-            color: var(--text-secondary);
-            margin: 0 0.8rem;
-            text-decoration: none;
-            transition: color 0.2s ease;
-        }
-
-        .footer-link:hover {
-            color: var(--accent-primary);
-        }
 
         /* Summernote customization for dark theme */
-        .note-editor.note-frame {
-            border-color: var(--border-color);
-            border-radius: 6px;
-        }
-
-        .note-toolbar {
-            background-color: var(--bg-tertiary);
-            border-bottom: 1px solid var(--border-color);
-            border-radius: 6px 6px 0 0;
-        }
-
-        .note-btn {
-            background-color: var(--bg-tertiary);
-            border-color: var(--border-color);
-            color: var(--text-primary);
-        }
-
-        .note-btn:hover, .note-btn:focus {
-            background-color: #3a3a3a;
-            color: var(--text-primary);
-        }
-
-        .note-editing-area {
-            background-color: var(--bg-tertiary);
-            color: var(--text-primary);
-        }
-
-        .note-editable {
-            background-color: var(--bg-tertiary);
-            color: var(--text-primary);
-        }
-
-        .note-status-output {
-            color: var(--text-primary);
-        }
-
-        .note-modal-content {
-            background-color: var(--bg-secondary);
-            color: var(--text-primary);
-        }
-
-        .note-modal-header {
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .note-modal-footer {
-            border-top: 1px solid var(--border-color);
-        }
 
         /* Animations */
         @keyframes fadeIn {
@@ -292,14 +207,6 @@
 
         /* Responsive */
         @media (max-width: 768px) {
-            h1, .h1 {
-                font-size: 1.8rem;
-            }
-
-            .btn-group {
-                flex-direction: column;
-                width: 100%;
-            }
 
             .btn-group .btn {
                 margin-bottom: 0.5rem;
@@ -358,18 +265,6 @@
         </div>
     </div>
 </div>
-
-<!-- Footer -->
-<footer class="footer">
-    <div class="container">
-        <div class="footer-links">
-            <a href="/posts" class="footer-link">Home</a>
-            <a href="#" class="footer-link">About</a>
-            <a href="#" class="footer-link">Contact</a>
-        </div>
-        <p>© 2025 Modern Blog. All rights reserved.</p>
-    </div>
-</footer>
 
 <!-- jQuery first, then Bootstrap JS -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
